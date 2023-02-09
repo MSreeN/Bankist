@@ -181,35 +181,43 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 //Loan functionality;
-btnLoan.addEventListener('click', function(e){
+btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
   // console.log(amount);
   // console.log((10/100)*amount);
-  if(amount >0 && currentAccount.movements.some(mov => mov >= 0.1* amount)){
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= 0.1 * amount)
+  ) {
     console.log("loan granted");
     currentAccount.movements.push(amount);
     updateUI(currentAccount);
   }
-})
+});
 
 // Closing account functionality
-btnClose.addEventListener('click', function(e){
+btnClose.addEventListener("click", function (e) {
   e.preventDefault();
   const closeUserName = inputCloseUsername.value;
   const closeUserPin = Number(inputClosePin.value);
   // console.log(closeUserName,closeUserPin);
-  if(closeUserName === currentAccount.username && closeUserPin === currentAccount.pin){
-    const userIndex = accounts.findIndex(acc => acc.username === closeUserName);
+  if (
+    closeUserName === currentAccount.username &&
+    closeUserPin === currentAccount.pin
+  ) {
+    const userIndex = accounts.findIndex(
+      (acc) => acc.username === closeUserName
+    );
     console.log(userIndex);
-    accounts.splice(userIndex,1);
+    accounts.splice(userIndex, 1);
     console.log(accounts);
     containerApp.style.opacity = "0";
   }
   inputClosePin.value = "";
   inputCloseUsername.value = "";
   inputClosePin.blur();
-})
+});
 //Getting username and pin
 
 // console.log(accounts);
@@ -267,6 +275,29 @@ const totalDepositsInUsd = movements
 //   acc.owner === "Jessica Davis"? console.log(acc):"";
 // }
 ///////////some and every method////////////////////
-console.log(movements.some(mov => mov>1000))
+// console.log(movements.some(mov => mov>1000))
 
-console.log(movements.every(mov => mov > -1000));
+// console.log(movements.every(mov => mov > -1000));
+
+/////////flat and flat map ///////////////////////////////
+
+const subArr = [1, 3, [2, 35, 6, [2, 5, 6, [1, 2]]], "last"];
+// console.log(subArr.flat(3));
+/////converts all movements of accounts into single array
+// const accountMovements = accounts.reduce((acc, cVal) =>{
+//   return [...acc,...cVal.movements];
+// },[])
+
+// const accountMovements = accounts.map(acc => acc.movements)
+// const allMovements  = accountMovements.flat();
+// const overallBalance = allMovements.reduce((acc, cVal) => acc+= cVal,0)
+// console.log(accountMovements, allMovements, overallBalance);
+
+// const overallBalance = accounts.map(acc => acc.movements).flat().reduce((acc, cVal) => acc += cVal,0)
+const overallBalance = accounts
+  .reduce((acc, cVal) => [...acc, ...cVal.movements], [])
+  .reduce((acc, cVal) => (acc += cVal), 0);
+console.log(overallBalance);
+
+const overallBalance2 = accounts.flatMap(acc => acc.movements)
+console.log(overallBalance2);
