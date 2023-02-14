@@ -297,7 +297,37 @@ const subArr = [1, 3, [2, 35, 6, [2, 5, 6, [1, 2]]], "last"];
 const overallBalance = accounts
   .reduce((acc, cVal) => [...acc, ...cVal.movements], [])
   .reduce((acc, cVal) => (acc += cVal), 0);
-console.log(overallBalance);
+// console.log(overallBalance);
 
 const overallBalance2 = accounts.flatMap(acc => acc.movements)
-console.log(overallBalance2);
+// console.log(overallBalance2);
+/////////Sorting Arrays///////////
+const owners = ['Jonas', 'Jack', 'Adam', 'Martha']
+//Sort method also mutates the original array and it does sorting based on the strings 
+//Sort method converts everything into string and does the sorting method
+console.log(owners.sort());
+console.log(owners);
+// const numArr = ['1', '2', '3', '7', '5'];
+console.log("Based on string ", movements.sort());
+// console.log( numArr.sort());
+// console.log(numArr);
+//Sort method can take a compare call back function and that call back function can take two arguments called 'a' and 'b', these arguments are like currentValue and nextValue
+//If we want a before b then return < 0(keep order)
+//If we want b before a then return > 0(switch order)
+//sort method loops through the array until the array is sorted in ascending order
+movements.sort((a,b) =>a -b)
+console.log("based on ascending method", movements);
+movements.sort((a,b) => {
+  if(a > b) return -1;
+  if(a < b) return 1;
+})
+console.log("based on descending method", movements);
+
+//If you want a before b return < 0 (keep change)
+//If you want b before a return > 0 (switch order)
+owners.sort((a,b) => {
+  if(a < b) return 1;
+  if(a >b) return -1;
+})
+
+console.log(owners);
