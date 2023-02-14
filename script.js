@@ -70,9 +70,10 @@ function updateUI(acc) {
   calcDisplaySummary(acc);
 }
 
-function displayMovements(movements) {
+function displayMovements(movements, sort = false) {
   containerMovements.innerHTML = "";
-  movements.forEach(function (movement, index) {
+  const movs = sort? movements.slice().sort((a,b) => a-b):movements;
+  movs.forEach(function (movement, index) {
     const type = movement > 0 ? "deposit" : "withdrawal";
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
@@ -218,6 +219,13 @@ btnClose.addEventListener("click", function (e) {
   inputCloseUsername.value = "";
   inputClosePin.blur();
 });
+
+let sorted = false;
+btnSort.addEventListener('click',function(e){
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+})
 //Getting username and pin
 
 // console.log(accounts);
