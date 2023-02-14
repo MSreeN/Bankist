@@ -133,12 +133,13 @@ function createUserName(accs) {
 }
 
 createUserName(accounts);
-
+let sorted;
 //Event Handlers
 let currentAccount;
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   // console.log("clicked");
+  sorted = false;
   currentAccount = accounts.find(
     (acc) => acc.username === inputLoginUsername.value.trim()
   );
@@ -220,7 +221,7 @@ btnClose.addEventListener("click", function (e) {
   inputClosePin.blur();
 });
 
-let sorted = false;
+
 btnSort.addEventListener('click',function(e){
   e.preventDefault();
   displayMovements(currentAccount.movements, !sorted);
