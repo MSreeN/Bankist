@@ -314,10 +314,10 @@ const overallBalance2 = accounts.flatMap(acc => acc.movements)
 const owners = ['Jonas', 'Jack', 'Adam', 'Martha']
 //Sort method also mutates the original array and it does sorting based on the strings 
 //Sort method converts everything into string and does the sorting method
-console.log(owners.sort());
-console.log(owners);
+// console.log(owners.sort());
+// console.log(owners);
 // const numArr = ['1', '2', '3', '7', '5'];
-console.log("Based on string ", movements.sort());
+// console.log("Based on string ", movements.sort());
 // console.log( numArr.sort());
 // console.log(numArr);
 //Sort method can take a compare call back function and that call back function can take two arguments called 'a' and 'b', these arguments are like currentValue and nextValue
@@ -325,12 +325,12 @@ console.log("Based on string ", movements.sort());
 //If we want b before a then return > 0(switch order)
 //sort method loops through the array until the array is sorted in ascending order
 movements.sort((a,b) =>a -b)
-console.log("based on ascending method", movements);
+// console.log("based on ascending method", movements);
 movements.sort((a,b) => {
   if(a > b) return -1;
   if(a < b) return 1;
 })
-console.log("based on descending method", movements);
+// console.log("based on descending method", movements);
 
 //If you want a before b return < 0 (keep change)
 //If you want b before a return > 0 (switch order)
@@ -339,4 +339,14 @@ owners.sort((a,b) => {
   if(a >b) return -1;
 })
 
-console.log(owners);
+// console.log(owners);
+
+const arr = new Array(8);
+console.log(arr);
+arr.push(10);
+console.log(arr);
+arr.fill(5,2,4 )
+arr.unshift(3);
+arr.pop();
+console.log(arr);
+
