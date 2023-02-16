@@ -342,11 +342,29 @@ owners.sort((a,b) => {
 // console.log(owners);
 
 const arr = new Array(8);
-console.log(arr);
+// console.log(arr);
 arr.push(10);
-console.log(arr);
+// console.log(arr);
 arr.fill(5,2,4 )
 arr.unshift(3);
+// console.log(arr);
+arr.fill(6,3,4)
 arr.pop();
-console.log(arr);
+// console.log(arr);
+let count = 0;
+const fromArr = Array.from({length :5},()=> count+= 1)
+console.log(fromArr);
 
+const randDiceRolls = Array.from({length:5}, ()=> Math.trunc(Math.random()*15))
+console.log(randDiceRolls);
+
+
+labelBalance.addEventListener('click', function(){
+  const movementsUI = Array.from(document.querySelectorAll('.movements__value'),((cVal,ind) => cVal.textContent));
+  console.log(movementsUI);
+})
+
+// const testing = Array.from(movements, (v, k) => v)
+// console.log(testing);
+
+console.log(Object.keys(account2));
