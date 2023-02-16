@@ -72,7 +72,7 @@ function updateUI(acc) {
 
 function displayMovements(movements, sort = false) {
   containerMovements.innerHTML = "";
-  const movs = sort? movements.slice().sort((a,b) => a-b):movements;
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
   movs.forEach(function (movement, index) {
     const type = movement > 0 ? "deposit" : "withdrawal";
     const html = `<div class="movements__row">
@@ -221,12 +221,11 @@ btnClose.addEventListener("click", function (e) {
   inputClosePin.blur();
 });
 
-
-btnSort.addEventListener('click',function(e){
+btnSort.addEventListener("click", function (e) {
   e.preventDefault();
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
-})
+});
 //Getting username and pin
 
 // console.log(accounts);
@@ -308,11 +307,11 @@ const overallBalance = accounts
   .reduce((acc, cVal) => (acc += cVal), 0);
 // console.log(overallBalance);
 
-const overallBalance2 = accounts.flatMap(acc => acc.movements)
+const overallBalance2 = accounts.flatMap((acc) => acc.movements);
 // console.log(overallBalance2);
 /////////Sorting Arrays///////////
-const owners = ['Jonas', 'Jack', 'Adam', 'Martha']
-//Sort method also mutates the original array and it does sorting based on the strings 
+const owners = ["Jonas", "Jack", "Adam", "Martha"];
+//Sort method also mutates the original array and it does sorting based on the strings
 //Sort method converts everything into string and does the sorting method
 // console.log(owners.sort());
 // console.log(owners);
@@ -324,20 +323,20 @@ const owners = ['Jonas', 'Jack', 'Adam', 'Martha']
 //If we want a before b then return < 0(keep order)
 //If we want b before a then return > 0(switch order)
 //sort method loops through the array until the array is sorted in ascending order
-movements.sort((a,b) =>a -b)
+movements.sort((a, b) => a - b);
 // console.log("based on ascending method", movements);
-movements.sort((a,b) => {
-  if(a > b) return -1;
-  if(a < b) return 1;
-})
+movements.sort((a, b) => {
+  if (a > b) return -1;
+  if (a < b) return 1;
+});
 // console.log("based on descending method", movements);
 
 //If you want a before b return < 0 (keep change)
 //If you want b before a return > 0 (switch order)
-owners.sort((a,b) => {
-  if(a < b) return 1;
-  if(a >b) return -1;
-})
+owners.sort((a, b) => {
+  if (a < b) return 1;
+  if (a > b) return -1;
+});
 
 // console.log(owners);
 
@@ -345,26 +344,100 @@ const arr = new Array(8);
 // console.log(arr);
 arr.push(10);
 // console.log(arr);
-arr.fill(5,2,4 )
+arr.fill(5, 2, 4);
 arr.unshift(3);
 // console.log(arr);
-arr.fill(6,3,4)
+arr.fill(6, 3, 4);
 arr.pop();
 // console.log(arr);
 let count = 0;
-const fromArr = Array.from({length :5},()=> count+= 1)
-console.log(fromArr);
+const fromArr = Array.from({ length: 5 }, () => (count += 1));
+// console.log(fromArr);
 
-const randDiceRolls = Array.from({length:5}, ()=> Math.trunc(Math.random()*15))
-console.log(randDiceRolls);
+const randDiceRolls = Array.from({ length: 5 }, () =>
+  Math.trunc(Math.random() * 15)
+);
+// console.log(randDiceRolls);
 
-
-labelBalance.addEventListener('click', function(){
-  const movementsUI = Array.from(document.querySelectorAll('.movements__value'),((cVal,ind) => cVal.textContent));
+labelBalance.addEventListener("click", function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll(".movements__value"),
+    (cVal, ind) => cVal.textContent
+  );
   console.log(movementsUI);
-})
+});
 
 // const testing = Array.from(movements, (v, k) => v)
 // console.log(testing);
 
-console.log(Object.keys(account2));
+// console.log(Object.keys(account2));
+
+///////////Exercises ////////////////////////
+//1.
+const allTrans = accounts
+  .flatMap((ele) => ele.movements)
+  .filter((ele) => ele > 0)
+  .reduce((acc, cVal) => acc + cVal, 0);
+// console.log(allTrans);
+
+//2.
+// const aboveThousandDeposits = accounts.flatMap(ele => ele.movements).filter(ele => ele > 1000).length
+//Same above code with reduce
+const aboveThousandDeposits = accounts
+  .flatMap((ele) => ele.movements)
+  .reduce((acc, cVal) => {
+    if (cVal >= 1000) return ++acc;
+    return acc;
+  }, 0);
+// console.log(aboveThousandDeposits);
+
+//3.
+const {deposits:deposit, withDrawals} = accounts
+  .flatMap((ele) => ele.movements)
+  .reduce(
+    (acc, cVal) => {
+      // if (cVal > 0) {
+      //   acc.deposits = acc.deposits + cVal;
+      //   return acc;
+      // }
+      // else{
+      //   acc.withDrawals = acc.withDrawals + cVal;
+      //   return acc;
+      // }
+      //Optimized above if else loop
+
+      acc[cVal > 0? 'deposits':'withDrawals'] += cVal;
+      return acc
+    }
+    ,
+    { deposits: 0, withDrawals: 0 }
+  );
+console.log(deposit,withDrawals);
+//Doing above challenge with only reduce.
+// const reduceFlat = accounts.reduce((acc,cVal)=>{
+//   acc.push(...cVal.movements)
+  
+//   return acc;
+// },[])
+// console.log(reduceFlat);
+
+//4.
+const convertTitleCase = function(title){
+  const capitalize = str => str[0].toUpperCase()+ str.slice(1)
+  const exceptions = ['an', 'a', 'and','the', 'but', 'or', 'on', 'in', 'with']
+  const splitBySpace = title.toLowerCase().split(' ').filter(word => word);
+  const titleCase = splitBySpace.map(ele =>{
+    // if(!exceptions.includes(ele)){
+    //   return `${ele.at(0).toUpperCase()}${ele.slice(1).toLowerCase()}`
+    // }
+    // else{
+    //   return ele;
+    // }
+    //Above if else loop can be optimized as 
+    return exceptions.includes(ele)?ele: capitalize(ele);
+  })
+  return capitalize(titleCase.join(' '))
+}
+console.log(convertTitleCase("this is a nice title"));
+console.log(convertTitleCase("this is a long title but not too long"));
+console.log(convertTitleCase("and  here is another the title with an EXAMPLE"));
