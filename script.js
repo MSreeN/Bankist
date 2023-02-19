@@ -486,8 +486,21 @@ const convertTitleCase = function(title){
 // console.log(convertTitleCase("this is a long title but not too long"));
 // console.log(convertTitleCase("and  here is another the title with an EXAMPLE"));
 
-console.log(Number.parseInt("37"));
-console.log(Number.parseInt("1010",2));
-console.log(Number.parseFloat());
-console.log(Number.isFinite(10));
-console.log(Number.isInteger(2.5));
+// console.log(Number.parseInt("37"));
+// console.log(Number.parseInt("1010",2));
+// console.log(Number.parseFloat());
+// console.log(Number.isFinite(10));
+// console.log(Number.isInteger(2.5));
+
+// console.log(Math.sqrt(9), 9 ** (1/2));
+// console.log(Math.cbrt(81), 81 ** (1/3));
+
+// const rand = Array.from({length:5}, ()=> Math.trunc(Math.random()*10))
+// console.log(rand);
+// console.log(Math.max(...rand));
+function rand(min, max){
+  console.log(Math.trunc(Math.random() * (max - min)+1)+min);
+}
+rand(-10,22)
+// console.log(Math.trunc(Math.random()*22));
+console.log(Math.trunc('-22.5'));
