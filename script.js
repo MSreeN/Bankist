@@ -123,7 +123,7 @@ function displayMovements(movements, sort = false) {
     <div class="movements__type movements__type--${type}">${
       index + 1
     } ${type}</div>
-    <div class="movements__value">${movement}</div>
+    <div class="movements__value">${(movement).toFixed(2)}</div>
   </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
@@ -135,7 +135,7 @@ const user = "Steven Thomas Williams";
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cVal) => (acc += cVal), 0);
-  labelBalance.textContent = `Rs.${acc.balance}`;
+  labelBalance.textContent = `Rs.${acc.balance.toFixed(2)}`;
 };
 //Hard coded argument function call
 // calcDisplayBalance(account1.movements);
@@ -143,13 +143,13 @@ function calcDisplaySummary(account) {
   const incomes = account.movements
     .filter((mov) => mov > 0)
     .reduce((acc, cVal) => acc + cVal, 0);
-  labelSumIn.textContent = `Rs.${incomes}`;
+  labelSumIn.textContent = `Rs.${incomes.toFixed(2)}`;
   const outgoing = account.movements
     .filter((mov) => mov < 0)
     .reduce((acc, cVal) => acc + cVal, 0);
   // console.log(outgoing);
 
-  labelSumOut.textContent = `Rs.${Math.abs(outgoing)}`;
+  labelSumOut.textContent = `Rs.${Math.abs(outgoing).toFixed(2)}`;
   //1.2% for every deposit
   const interest = account.movements
     .filter((mov) => mov > 0)
@@ -161,7 +161,7 @@ function calcDisplaySummary(account) {
       if (cValInterest >= 1) return acc + cValInterest;
       else return acc + 0;
     }, 0);
-  labelSumInterest.textContent = `Rs.${interest}`;
+  labelSumInterest.textContent = `Rs.${interest.toFixed(2)}`;
 }
 //Hard coded function call
 // calcDisplaySummary(account1.movements);
@@ -229,7 +229,8 @@ btnTransfer.addEventListener("click", function (e) {
 //Loan functionality;
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.floor(inputLoanAmount.value)
+  
   // console.log(amount);
   // console.log((10/100)*amount);
   if (
@@ -499,8 +500,27 @@ const convertTitleCase = function(title){
 // console.log(rand);
 // console.log(Math.max(...rand));
 function rand(min, max){
-  console.log(Math.trunc(Math.random() * (max - min)+1)+min);
+  // console.log(Math.trunc(Math.random() * (max - min)+1)+min);
 }
-rand(-10,22)
+rand(10,22)
 // console.log(Math.trunc(Math.random()*22));
-console.log(Math.trunc('-22.5'));
+// console.log(Math.trunc('-22.5'));
+
+
+////////////Rounding Numbers////////////////
+////2.1 is primitive and we are calling method toFixed on primitive, js will perform boxing on these numbers internally
+// console.log((2.1676).toFixed(0));
+// console.log((2).toFixed(3));
+
+//////////////////Remainder Operator///////////////
+
+function isEven(a){
+  console.log(`${a%2 === 0?"even":"odd"}`);
+}
+isEven(3)
+labelBalance.addEventListener('click',()=>{
+const alldata = [...document.querySelectorAll(".movements__row")]
+alldata.forEach((val,i) => {
+  if(i%2 === 0) val.style.backgroundColor = "orangered";
+})}
+)
