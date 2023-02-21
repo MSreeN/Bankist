@@ -515,7 +515,7 @@ rand(10,22)
 //////////////////Remainder Operator///////////////
 
 function isEven(a){
-  console.log(`${a%2 === 0?"even":"odd"}`);
+  // console.log(`${a%2 === 0?"even":"odd"}`);
 }
 isEven(3)
 labelBalance.addEventListener('click',()=>{
@@ -524,3 +524,11 @@ alldata.forEach((val,i) => {
   if(i%2 === 0) val.style.backgroundColor = "orangered";
 })}
 )
+  
+console.log(2**53-1);
+console.log(2**53+6);
+console.log(typeof 10n);
+console.log(BigInt("59278905438573475894350273538457"));
+console.log(BigInt("59278905438573475894350273538457"));
+const bi = 34323n;
+console.log(34323 === bi);
