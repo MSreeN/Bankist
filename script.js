@@ -38,43 +38,43 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: "Jonas Schmedtmann",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: "EUR",
+  locale: "pt-PT", // de-DE
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: "Jessica Davis",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 
   movementsDates: [
-    '2019-11-01T13:15:33.035Z',
-    '2019-11-30T09:48:16.867Z',
-    '2019-12-25T06:04:23.907Z',
-    '2020-01-25T14:18:46.235Z',
-    '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: "USD",
+  locale: "en-US",
 };
 
 const accounts = [account1, account2];
@@ -107,29 +107,38 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 function updateUI(acc) {
   //Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
   //Display balance
   calcDisplayBalance(acc);
   //Display summary
   calcDisplaySummary(acc);
 }
 
-function displayMovements(movements, sort = false) {
+function displayMovements(acc, sort = false) {
   containerMovements.innerHTML = "";
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
   movs.forEach(function (movement, index) {
     const type = movement > 0 ? "deposit" : "withdrawal";
+    const date = new Date(acc.movementsDates[index]);
+    const year = date.getFullYear();
+    const month = String(date.getMonth()).padStart(2, 0);
+    const day = String(date.getDate()).padStart(2, 0);
+
+    const transactionDate = `${day}/${month}/${year}`;
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
       index + 1
     } ${type}</div>
-    <div class="movements__value">${(movement).toFixed(2)}</div>
+    <div class="movements__date">${transactionDate}</div>
+    <div class="movements__value">${movement.toFixed(2)}</div>
   </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 }
 
-displayMovements(account1.movements);
+// displayMovements(account1);
 
 const user = "Steven Thomas Williams";
 
@@ -200,6 +209,14 @@ btnLogin.addEventListener("click", function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
     }`;
+    //creating current date
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth()).padStart(2, 0);
+    const day = String(now.getDate()).padStart(2, 0);
+    const hour = String(now.getHours()).padStart(0, 2);
+    const mins = String(now.getMinutes()).padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${mins}`;
     containerApp.style.opacity = "100";
     updateUI(currentAccount);
     //clear input fields
@@ -229,14 +246,17 @@ btnTransfer.addEventListener("click", function (e) {
     //doing the transfer
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
+    //Adding dates to transfers
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
   }
 });
 //Loan functionality;
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Math.floor(inputLoanAmount.value)
-  
+  const amount = Math.floor(inputLoanAmount.value);
+
   // console.log(amount);
   // console.log((10/100)*amount);
   if (
@@ -245,6 +265,9 @@ btnLoan.addEventListener("click", function (e) {
   ) {
     console.log("loan granted");
     currentAccount.movements.push(amount);
+    //Adding dates to transfers
+    currentAccount.movementsDates.push(new Date().toISOString());
+    // receiverAcc.movementsDates.push(new Date());
     updateUI(currentAccount);
   }
 });
@@ -274,7 +297,7 @@ btnClose.addEventListener("click", function (e) {
 
 btnSort.addEventListener("click", function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 //Getting username and pin
@@ -443,7 +466,7 @@ const aboveThousandDeposits = accounts
 // console.log(aboveThousandDeposits);
 
 //3.
-const {deposits:deposit, withDrawals} = accounts
+const { deposits: deposit, withDrawals } = accounts
   .flatMap((ele) => ele.movements)
   .reduce(
     (acc, cVal) => {
@@ -457,38 +480,40 @@ const {deposits:deposit, withDrawals} = accounts
       // }
       //Optimized above if else loop
 
-      acc[cVal > 0? 'deposits':'withDrawals'] += cVal;
-      return acc
-    }
-    ,
+      acc[cVal > 0 ? "deposits" : "withDrawals"] += cVal;
+      return acc;
+    },
     { deposits: 0, withDrawals: 0 }
   );
 // console.log(deposit,withDrawals);
 //Doing above challenge with only reduce.
 // const reduceFlat = accounts.reduce((acc,cVal)=>{
 //   acc.push(...cVal.movements)
-  
+
 //   return acc;
 // },[])
 // console.log(reduceFlat);
 
 //4.
-const convertTitleCase = function(title){
-  const capitalize = str => str[0].toUpperCase()+ str.slice(1)
-  const exceptions = ['an', 'a', 'and','the', 'but', 'or', 'on', 'in', 'with']
-  const splitBySpace = title.toLowerCase().split(' ').filter(word => word);
-  const titleCase = splitBySpace.map(ele =>{
+const convertTitleCase = function (title) {
+  const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
+  const exceptions = ["an", "a", "and", "the", "but", "or", "on", "in", "with"];
+  const splitBySpace = title
+    .toLowerCase()
+    .split(" ")
+    .filter((word) => word);
+  const titleCase = splitBySpace.map((ele) => {
     // if(!exceptions.includes(ele)){
     //   return `${ele.at(0).toUpperCase()}${ele.slice(1).toLowerCase()}`
     // }
     // else{
     //   return ele;
     // }
-    //Above if else loop can be optimized as 
-    return exceptions.includes(ele)?ele: capitalize(ele);
-  })
-  return capitalize(titleCase.join(' '))
-}
+    //Above if else loop can be optimized as
+    return exceptions.includes(ele) ? ele : capitalize(ele);
+  });
+  return capitalize(titleCase.join(" "));
+};
 // console.log(convertTitleCase("this is a nice title"));
 // console.log(convertTitleCase("this is a long title but not too long"));
 // console.log(convertTitleCase("and  here is another the title with an EXAMPLE"));
@@ -505,13 +530,12 @@ const convertTitleCase = function(title){
 // const rand = Array.from({length:5}, ()=> Math.trunc(Math.random()*10))
 // console.log(rand);
 // console.log(Math.max(...rand));
-function rand(min, max){
+function rand(min, max) {
   // console.log(Math.trunc(Math.random() * (max - min)+1)+min);
 }
-rand(10,22)
+rand(10, 22);
 // console.log(Math.trunc(Math.random()*22));
 // console.log(Math.trunc('-22.5'));
-
 
 ////////////Rounding Numbers////////////////
 ////2.1 is primitive and we are calling method toFixed on primitive, js will perform boxing on these numbers internally
@@ -520,17 +544,17 @@ rand(10,22)
 
 //////////////////Remainder Operator///////////////
 
-function isEven(a){
+function isEven(a) {
   // console.log(`${a%2 === 0?"even":"odd"}`);
 }
-isEven(3)
-labelBalance.addEventListener('click',()=>{
-const alldata = [...document.querySelectorAll(".movements__row")]
-alldata.forEach((val,i) => {
-  if(i%2 === 0) val.style.backgroundColor = "orangered";
-})}
-)
-  
+isEven(3);
+labelBalance.addEventListener("click", () => {
+  const alldata = [...document.querySelectorAll(".movements__row")];
+  alldata.forEach((val, i) => {
+    if (i % 2 === 0) val.style.backgroundColor = "orangered";
+  });
+});
+
 // console.log(2**53-1);
 // console.log(2**53+6);
 // console.log(typeof 10n);
@@ -542,26 +566,28 @@ alldata.forEach((val,i) => {
 ///////////////Dates and Time/////////////////////////
 /////////////////Date//////////////////////////////
 
-
 ///Creating a date
-
 
 // const date = new Date();
 // console.log(date);
-// console.log(new Date(1*24*60*60*1000)) 
+// console.log(new Date(1*24*60*60*1000))
 
 /////Working with dates
 
-const future = new Date(2024, 9, 25)
+const future = new Date(2024, 9, 25);
 console.log(future);
 console.log(future.getDay());
 console.log(new Date(future.getTime()));
 console.log(new Date(Date.now()));
 const samp = new Date().setFullYear(2050);
 console.log(samp);
-const currDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+const currDate = new Date(
+  new Date().getFullYear(),
+  new Date().getMonth(),
+  new Date().getDate()
+);
 console.log(currDate);
 const deadLine = new Date(2023, 1, 24);
 const remainingSecs = deadLine.getTime() - currDate.getTime();
-const remainingDays = remainingSecs/(1000* 3600 * 24);
+const remainingDays = remainingSecs / (1000 * 3600 * 24);
 console.log(remainingDays.toFixed(0));
