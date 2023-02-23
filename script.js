@@ -180,6 +180,12 @@ createUserName(accounts);
 let sorted;
 //Event Handlers
 let currentAccount;
+
+//Fake always login
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = "100";
+
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   // console.log("clicked");
@@ -525,10 +531,37 @@ alldata.forEach((val,i) => {
 })}
 )
   
-console.log(2**53-1);
-console.log(2**53+6);
-console.log(typeof 10n);
-console.log(BigInt("59278905438573475894350273538457"));
-console.log(BigInt("59278905438573475894350273538457"));
-const bi = 34323n;
-console.log(34323 === bi);
+// console.log(2**53-1);
+// console.log(2**53+6);
+// console.log(typeof 10n);
+// console.log(BigInt("59278905438573475894350273538457"));
+// console.log(BigInt("59278905438573475894350273538457"));
+// const bi = 34323n;
+// console.log(34323 === bi);
+
+///////////////Dates and Time/////////////////////////
+/////////////////Date//////////////////////////////
+
+
+///Creating a date
+
+
+// const date = new Date();
+// console.log(date);
+// console.log(new Date(1*24*60*60*1000)) 
+
+/////Working with dates
+
+const future = new Date(2024, 9, 25)
+console.log(future);
+console.log(future.getDay());
+console.log(new Date(future.getTime()));
+console.log(new Date(Date.now()));
+const samp = new Date().setFullYear(2050);
+console.log(samp);
+const currDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+console.log(currDate);
+const deadLine = new Date(2023, 1, 24);
+const remainingSecs = deadLine.getTime() - currDate.getTime();
+const remainingDays = remainingSecs/(1000* 3600 * 24);
+console.log(remainingDays.toFixed(0));
