@@ -49,9 +49,9 @@ const account1 = {
     "2020-01-28T09:15:04.904Z",
     "2020-04-01T10:17:24.185Z",
     "2020-05-08T14:11:59.604Z",
-    "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2023-02-26T17:01:17.194Z",
+    "2023-02-27T23:36:17.929Z",
+    "2023-02-28T10:51:36.790Z",
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
@@ -114,6 +114,26 @@ function updateUI(acc) {
   calcDisplaySummary(acc);
 }
 
+function formatMovementDate(date){
+  // Function to calculate no.of days between 2 days
+  function calcDaysPassed(date1, date2) {
+    return Math.round(Math.abs((date2 - date1)/(24 * 60 * 60 * 1000)))
+  }
+  const daysPassed = calcDaysPassed(new Date(), date)
+  console.log(daysPassed);
+  if(daysPassed === 0) return "Today";
+  if(daysPassed === 1) return "Yesterday";
+  if(daysPassed <= 7) return `${daysPassed} days ago`
+  else{
+
+    const year = date.getFullYear();
+      const month = String(date.getMonth()).padStart(2, 0);
+      const day = String(date.getDate()).padStart(2, 0);
+  
+      return `${day}/${month}/${year}`;
+  }
+}
+
 function displayMovements(acc, sort = false) {
   containerMovements.innerHTML = "";
   const movs = sort
@@ -122,11 +142,10 @@ function displayMovements(acc, sort = false) {
   movs.forEach(function (movement, index) {
     const type = movement > 0 ? "deposit" : "withdrawal";
     const date = new Date(acc.movementsDates[index]);
-    const year = date.getFullYear();
-    const month = String(date.getMonth()).padStart(2, 0);
-    const day = String(date.getDate()).padStart(2, 0);
+    
+    const transactionDate = formatMovementDate(date);
 
-    const transactionDate = `${day}/${month}/${year}`;
+    
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
       index + 1
@@ -580,14 +599,22 @@ console.log(future.getDay());
 console.log(new Date(future.getTime()));
 console.log(new Date(Date.now()));
 const samp = new Date().setFullYear(2050);
-console.log(samp);
 const currDate = new Date(
   new Date().getFullYear(),
   new Date().getMonth(),
   new Date().getDate()
 );
-console.log(currDate);
-const deadLine = new Date(2023, 1, 24);
-const remainingSecs = deadLine.getTime() - currDate.getTime();
-const remainingDays = remainingSecs / (1000 * 3600 * 24);
-console.log(remainingDays.toFixed(0));
+// console.log(currDate);
+// const deadLine = new Date(2023, 1, 24);
+// const remainingSecs = deadLine.getTime() - currDate.getTime();
+// const remainingDays = remainingSecs / (1000 * 3600 * 24);
+// console.log(remainingDays);
+
+// console.log(currDate.getTime());
+// console.log(+currDate);
+
+function calcDaysPassed(date1, date2){
+  return (date2 - date1)/ (24 * 3600 * 1000)
+}
+
+console.log(calcDaysPassed(new Date(2023, 4, 1), new Date(2023, 4, 3)));
