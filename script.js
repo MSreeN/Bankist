@@ -114,23 +114,18 @@ function updateUI(acc) {
   calcDisplaySummary(acc);
 }
 
-function formatMovementDate(date){
+function formatMovementDate(date, locale) {
   // Function to calculate no.of days between 2 days
   function calcDaysPassed(date1, date2) {
-    return Math.round(Math.abs((date2 - date1)/(24 * 60 * 60 * 1000)))
+    return Math.round(Math.abs((date2 - date1) / (24 * 60 * 60 * 1000)));
   }
-  const daysPassed = calcDaysPassed(new Date(), date)
+  const daysPassed = calcDaysPassed(new Date(), date);
   console.log(daysPassed);
-  if(daysPassed === 0) return "Today";
-  if(daysPassed === 1) return "Yesterday";
-  if(daysPassed <= 7) return `${daysPassed} days ago`
-  else{
-
-    const year = date.getFullYear();
-      const month = String(date.getMonth()).padStart(2, 0);
-      const day = String(date.getDate()).padStart(2, 0);
-  
-      return `${day}/${month}/${year}`;
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "Yesterday";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  else {
+    return Intl.DateTimeFormat(locale).format(date)
   }
 }
 
@@ -142,10 +137,9 @@ function displayMovements(acc, sort = false) {
   movs.forEach(function (movement, index) {
     const type = movement > 0 ? "deposit" : "withdrawal";
     const date = new Date(acc.movementsDates[index]);
-    
-    const transactionDate = formatMovementDate(date);
 
-    
+    const transactionDate = formatMovementDate(date, acc.locale);
+
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
       index + 1
@@ -214,6 +208,8 @@ currentAccount = account1;
 updateUI(currentAccount);
 containerApp.style.opacity = "100";
 
+//Experimenting API
+
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   // console.log("clicked");
@@ -228,14 +224,30 @@ btnLogin.addEventListener("click", function (e) {
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(" ")[0]
     }`;
-    //creating current date
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth()).padStart(2, 0);
-    const day = String(now.getDate()).padStart(2, 0);
-    const hour = String(now.getHours()).padStart(0, 2);
-    const mins = String(now.getMinutes()).padStart(2, 0);
-    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${mins}`;
+    // const userLocale = navigator.language;
+    // console.log(userLocale);
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      weekday: "long",
+    };
+    labelDate.textContent = Intl.DateTimeFormat(currentAccount.locale, options).format(
+      now
+    );
+    // const intlDate = Intl.DateTimeFormat('en-US').format(now);
+    // console.log(intlDate);
+    //creating current date
+    // const now = new Date();
+    // const year = now.getFullYear();
+    // const month = String(now.getMonth()).padStart(2, 0);
+    // const day = String(now.getDate()).padStart(2, 0);
+    // const hour = String(now.getHours()).padStart(0, 2);
+    // const mins = String(now.getMinutes()).padStart(2, 0);
+    // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${mins}`;
     containerApp.style.opacity = "100";
     updateUI(currentAccount);
     //clear input fields
@@ -613,8 +625,8 @@ const currDate = new Date(
 // console.log(currDate.getTime());
 // console.log(+currDate);
 
-function calcDaysPassed(date1, date2){
-  return (date2 - date1)/ (24 * 3600 * 1000)
+function calcDaysPassed(date1, date2) {
+  return (date2 - date1) / (24 * 3600 * 1000);
 }
 
 console.log(calcDaysPassed(new Date(2023, 4, 1), new Date(2023, 4, 3)));
