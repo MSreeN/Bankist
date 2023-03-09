@@ -139,13 +139,17 @@ function displayMovements(acc, sort = false) {
     const date = new Date(acc.movementsDates[index]);
 
     const transactionDate = formatMovementDate(date, acc.locale);
-
+    const option = {
+      style: 'currency',
+      currency: "INR"
+    }
+    const formattedMov = Intl.NumberFormat(acc.locale,option).format(movement);
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
       index + 1
     } ${type}</div>
     <div class="movements__date">${transactionDate}</div>
-    <div class="movements__value">${movement.toFixed(2)}</div>
+    <div class="movements__value">${formattedMov}</div>
   </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
@@ -157,7 +161,13 @@ const user = "Steven Thomas Williams";
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cVal) => (acc += cVal), 0);
-  labelBalance.textContent = `Rs.${acc.balance.toFixed(2)}`;
+  const options = {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits:2
+  }
+  const formattedBalance=  Intl.NumberFormat('en-IN',options).format(acc.balance)
+  labelBalance.textContent = formattedBalance;
 };
 //Hard coded argument function call
 // calcDisplayBalance(account1.movements);
@@ -231,9 +241,8 @@ btnLogin.addEventListener("click", function (e) {
       hour: "numeric",
       minute: "numeric",
       day: "2-digit",
-      month: "long",
+      month: "numeric",
       year: "numeric",
-      weekday: "long",
     };
     labelDate.textContent = Intl.DateTimeFormat(currentAccount.locale, options).format(
       now
@@ -629,4 +638,15 @@ function calcDaysPassed(date1, date2) {
   return (date2 - date1) / (24 * 3600 * 1000);
 }
 
-console.log(calcDaysPassed(new Date(2023, 4, 1), new Date(2023, 4, 3)));
+// console.log(calcDaysPassed(new Date(2023, 4, 1), new Date(2023, 4, 3)));
+
+
+//////////Internationalizing numbers
+
+const options = {
+  style: 'unit',
+  // unit: 'mile-per-hour'
+  unit: 'celsius'
+}
+const num = 12341343;
+console.log(Intl.NumberFormat(navigator.language, options).format(num));
