@@ -141,7 +141,7 @@ function displayMovements(acc, sort = false) {
     const transactionDate = formatMovementDate(date, acc.locale);
     const option = {
       style: 'currency',
-      currency: "INR"
+      currency: acc.currency
     }
     const formattedMov = Intl.NumberFormat(acc.locale,option).format(movement);
     const html = `<div class="movements__row">
@@ -163,10 +163,10 @@ const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cVal) => (acc += cVal), 0);
   const options = {
     style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits:2
+    currency: acc.currency,
+    maximumFractionDigits:2  
   }
-  const formattedBalance=  Intl.NumberFormat('en-IN',options).format(acc.balance)
+  const formattedBalance=  Intl.NumberFormat(acc.locale,options).format(acc.balance)
   labelBalance.textContent = formattedBalance;
 };
 //Hard coded argument function call
