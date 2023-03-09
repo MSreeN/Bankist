@@ -208,17 +208,29 @@ function createUserName(accs) {
 }
 
 createUserName(accounts);
-let sorted;
-//Event Handlers
+
+function startLogOutTimer(){
+  //Set time to 5 minutes
+  let timer = 100;
+  // In each call, print the remaining time to UI
+  setInterval(() => {
+    labelTimer.textContent = timer;
+    timer--;
+  }, 1000);
+  // When 0 seconds, stop timer and log out user
+}
+
+////////////////////////Event Handlers
 let currentAccount;
 
-//Fake always login
+//Fake always logged in
 currentAccount = account1;
 updateUI(currentAccount);
 containerApp.style.opacity = "100";
 
-//Experimenting API
 
+
+let sorted;
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   // console.log("clicked");
@@ -668,7 +680,9 @@ if(!inge.includes('spinach')){
 }
 // console.log(pizzaTimeout);
 
-setInterval(() => {
-  const now = new Date();
-  // console.log(`${now.getHours()} : ${now.getMinutes()} : ${now.getSeconds()}`);
-}, 1000 );
+let timer  = 10;
+// setInterval(() => {
+//   console.log(timer);
+//   timer--;
+
+// }, 1000);
