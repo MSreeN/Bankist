@@ -211,22 +211,34 @@ createUserName(accounts);
 
 function startLogOutTimer(){
   //Set time to 5 minutes
-  let timer = 100;
+  let time = 10;
+  
   // In each call, print the remaining time to UI
-  setInterval(() => {
-    labelTimer.textContent = timer;
-    timer--;
-  }, 1000);
+  function tick() {
+    let minutes = String(Math.trunc(time / 60)).padStart(2,0);
+  let seconds = String(time % 60).padStart(2,0);
+  labelTimer.textContent = `${minutes} : ${seconds}`;
+  if(time === 0){
+    clearInterval(timer);
+    labelWelcome.textContent = "Log in to get started";
+    containerApp.style.opacity = 0;
+  }
+  time--;
+  }
+  tick();
+  const timer = setInterval(tick, 1000)
+
   // When 0 seconds, stop timer and log out user
+  
 }
 
 ////////////////////////Event Handlers
 let currentAccount;
 
 //Fake always logged in
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = "100";
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = "100";
 
 
 
@@ -275,6 +287,7 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginUsername.value = "";
     //Makes the field to loose focus
     inputLoginPin.blur();
+    startLogOutTimer();
   }
 });
 //transferring money functionality
