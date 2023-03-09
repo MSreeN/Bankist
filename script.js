@@ -120,7 +120,7 @@ function formatMovementDate(date, locale) {
     return Math.round(Math.abs((date2 - date1) / (24 * 60 * 60 * 1000)));
   }
   const daysPassed = calcDaysPassed(new Date(), date);
-  console.log(daysPassed);
+  // console.log(daysPassed);
   if (daysPassed === 0) return "Today";
   if (daysPassed === 1) return "Yesterday";
   if (daysPassed <= 7) return `${daysPassed} days ago`;
@@ -289,6 +289,8 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.movementsDates.push(new Date().toISOString());
     receiverAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
+    inputTransferAmount.value ='';
+     inputTransferTo.value = '';
   }
 });
 //Loan functionality;
@@ -307,7 +309,10 @@ btnLoan.addEventListener("click", function (e) {
     //Adding dates to transfers
     currentAccount.movementsDates.push(new Date().toISOString());
     // receiverAcc.movementsDates.push(new Date());
-    updateUI(currentAccount);
+    setTimeout(() => {
+      updateUI(currentAccount);
+    }, 2000);
+    inputLoanAmount.value = '';
   }
 });
 
@@ -614,10 +619,10 @@ labelBalance.addEventListener("click", () => {
 /////Working with dates
 
 const future = new Date(2024, 9, 25);
-console.log(future);
-console.log(future.getDay());
-console.log(new Date(future.getTime()));
-console.log(new Date(Date.now()));
+// console.log(future);
+// console.log(future.getDay());
+// console.log(new Date(future.getTime()));
+// console.log(new Date(Date.now()));
 const samp = new Date().setFullYear(2050);
 const currDate = new Date(
   new Date().getFullYear(),
@@ -648,4 +653,22 @@ const options = {
   unit: 'celsius'
 }
 const num = 12341343;
-console.log(Intl.NumberFormat(navigator.language, options).format(num));
+// console.log(Intl.NumberFormat(navigator.language, options).format(num));
+
+
+///////////////Timers////////////////
+
+const inge = ['spinach', 'cheese']
+const pizzaTimeout = setTimeout((inge1, inge2) => {
+  // console.log(`Pizza with ${inge1} and ${inge2} is ready!`);
+}, 1,...inge);
+
+if(!inge.includes('spinach')){
+  clearTimeout(pizzaTimeout)
+}
+// console.log(pizzaTimeout);
+
+setInterval(() => {
+  const now = new Date();
+  // console.log(`${now.getHours()} : ${now.getMinutes()} : ${now.getSeconds()}`);
+}, 1000 );
