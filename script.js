@@ -129,6 +129,14 @@ function formatMovementDate(date, locale) {
   }
 }
 
+function formatCur(value, locale, currency){
+  return Intl.NumberFormat(locale,{
+    style : 'currency',
+    currency: currency,
+    maximumFractionDigits: 2
+  }).format(value)
+}
+
 function displayMovements(acc, sort = false) {
   containerMovements.innerHTML = "";
   const movs = sort
@@ -139,11 +147,7 @@ function displayMovements(acc, sort = false) {
     const date = new Date(acc.movementsDates[index]);
 
     const transactionDate = formatMovementDate(date, acc.locale);
-    const option = {
-      style: 'currency',
-      currency: acc.currency
-    }
-    const formattedMov = Intl.NumberFormat(acc.locale,option).format(movement);
+    const formattedMov = formatCur(movement, acc.locale, acc.currency)
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${
       index + 1
@@ -161,12 +165,7 @@ const user = "Steven Thomas Williams";
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cVal) => (acc += cVal), 0);
-  const options = {
-    style: 'currency',
-    currency: acc.currency,
-    maximumFractionDigits:2  
-  }
-  const formattedBalance=  Intl.NumberFormat(acc.locale,options).format(acc.balance)
+  const formattedBalance = formatCur(acc.balance, acc.locale,acc.currency)
   labelBalance.textContent = formattedBalance;
 };
 //Hard coded argument function call
@@ -175,13 +174,13 @@ function calcDisplaySummary(account) {
   const incomes = account.movements
     .filter((mov) => mov > 0)
     .reduce((acc, cVal) => acc + cVal, 0);
-  labelSumIn.textContent = `Rs.${incomes.toFixed(2)}`;
+  labelSumIn.textContent = formatCur(incomes,account.locale, account.currency);
   const outgoing = account.movements
     .filter((mov) => mov < 0)
     .reduce((acc, cVal) => acc + cVal, 0);
   // console.log(outgoing);
 
-  labelSumOut.textContent = `Rs.${Math.abs(outgoing).toFixed(2)}`;
+  labelSumOut.textContent = formatCur(outgoing,account.locale, account.currency);;
   //1.2% for every deposit
   const interest = account.movements
     .filter((mov) => mov > 0)
@@ -193,7 +192,7 @@ function calcDisplaySummary(account) {
       if (cValInterest >= 1) return acc + cValInterest;
       else return acc + 0;
     }, 0);
-  labelSumInterest.textContent = `Rs.${interest.toFixed(2)}`;
+  labelSumInterest.textContent = formatCur(interest,account.locale, account.currency);;
 }
 //Hard coded function call
 // calcDisplaySummary(account1.movements);
