@@ -344,7 +344,8 @@ btnLoan.addEventListener("click", function (e) {
       updateUI(currentAccount);
     }, 2000);
     inputLoanAmount.value = '';
-    
+    clearInterval(timer);
+    startLogOutTimer();
   }
 });
 
