@@ -208,10 +208,10 @@ function createUserName(accs) {
 }
 
 createUserName(accounts);
-
+let timer;
 function startLogOutTimer(){
   //Set time to 5 minutes
-  let time = 10;
+  let time = 30;
   
   // In each call, print the remaining time to UI
   function tick() {
@@ -226,10 +226,10 @@ function startLogOutTimer(){
   time--;
   }
   tick();
-  const timer = setInterval(tick, 1000)
+  timer = setInterval(tick, 1000)
 
   // When 0 seconds, stop timer and log out user
-  
+  return timer;
 }
 
 ////////////////////////Event Handlers
@@ -287,7 +287,9 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginUsername.value = "";
     //Makes the field to loose focus
     inputLoginPin.blur();
-    startLogOutTimer();
+      if(timer)
+        clearInterval(timer);
+      startLogOutTimer();
   }
 });
 //transferring money functionality
@@ -693,7 +695,7 @@ if(!inge.includes('spinach')){
 }
 // console.log(pizzaTimeout);
 
-let timer  = 10;
+// let timer  = 10;
 // setInterval(() => {
 //   console.log(timer);
 //   timer--;
